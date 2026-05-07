@@ -1,0 +1,14 @@
+services:
+    dashboard.helper:
+      class: Drupal\custom_example\Service\DashboardHelper
+      arguments: ['@entity_type.manager', '@current_user', '@database', '@logger.factory', '@config.factory', '@path_alias.manager', '@language_manager']
+
+    analytics.helper:
+      class: Drupal\custom_example\Service\AnalyticsHelper
+      arguments: ['@entity_type.manager', '@current_user', '@database', '@logger.factory', '@config.factory', '@path_alias.manager', '@language_manager', '@renderer', '@dashboard.helper']
+
+    tracker.request_subscriber:
+      class: Drupal\custom_example\EventSubscriber\PageTrackerSubscriber
+      arguments: ['@entity_type.manager', '@current_user', '@database', '@session', '@logger.factory', '@config.factory', '@current_route_match', '@base.helper', '@analytics.helper']
+      tags:
+        - { name: event_subscriber }

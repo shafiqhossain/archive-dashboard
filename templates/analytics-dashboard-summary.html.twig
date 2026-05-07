@@ -1,0 +1,75 @@
+<div class="analytics-dashboard-summary">
+  <div class="analytics-dashboard-inner">
+    <div class="analytics-dashboard-summary-inner">
+      <div class="title-tabs-wrapper">
+        <div class="title-wrapper">
+          <h3 class="talk-show-title">{{ talk_show_title }}</h3>
+        </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#dashboard-summary-{{ talk_show_nid }}" aria-controls="dashboard-summary-{{ talk_show_nid }}" role="tab" data-toggle="tab">Summary</a></li>
+          <li role="presentation"><a href="#live-listener-stats-{{ talk_show_nid }}" aria-controls="live-listener-stats-{{ talk_show_nid }}" role="tab" data-toggle="tab">Live Listener Stats</a></li>
+        </ul>
+      </div>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="dashboard-summary-{{ talk_show_nid }}">
+          {# Tabs for two month summary START #}
+          <div class="panel panel-default">
+            <div class="panel-heading panel-heading-nav">
+              <ul class="nav nav-tabs">
+                {% set current_month_label = summary_contents_data.month_0.context.month_year %}
+                <li role="presentation" class="active">
+                  <a href="#current-month-summary-{{ talk_show_nid }}" aria-controls="current-month-summary-{{ talk_show_nid }}" role="tab" data-toggle="tab">{{ current_month_label }}</a>
+                </li>
+                {% set previous_month_label = summary_contents_data.month_1.context.month_year %}
+                <li role="presentation">
+                  <a href="#previous-month-summary-{{ talk_show_nid }}" aria-controls="previous-month-summary-{{ talk_show_nid }}" role="tab" data-toggle="tab">{{ previous_month_label }}</a>
+                </li>
+                {% set previous_previous_month_label = summary_contents_data.month_2.context.month_year %}
+                <li role="presentation">
+                  <a href="#previous-previous-month-summary-{{ talk_show_nid }}" aria-controls="previous-previous-month-summary-{{ talk_show_nid }}" role="tab" data-toggle="tab">{{ previous_previous_month_label }}</a>
+                </li>
+              </ul>
+            </div>
+            <div class="panel-body">
+              <div class="tab-content">
+                {% set current_month_output = summary_contents_data.month_0.output %}
+                {% set current_month_more_output = summary_contents_data.month_0.more_output %}
+                <div role="tabpanel" class="tab-pane fade in active" id="current-month-summary-{{ talk_show_nid }}">
+                  {{ current_month_output|raw }}
+                  <br />
+                  {{ current_month_more_output|raw }}
+                </div>
+
+                {% set previous_month_output = summary_contents_data.month_1.output %}
+                {% set previous_month_more_output = summary_contents_data.month_1.more_output %}
+                <div role="tabpanel" class="tab-pane fade" id="previous-month-summary-{{ talk_show_nid }}">
+                  {{ previous_month_output|raw }}
+                  <br />
+                  {{ previous_month_more_output|raw }}
+                </div>
+
+                {% set previous_previous_month_output = summary_contents_data.month_2.output %}
+                {% set previous_previous_month_more_output = summary_contents_data.month_2.more_output %}
+                <div role="tabpanel" class="tab-pane fade" id="previous-previous-month-summary-{{ talk_show_nid }}">
+                  {{ previous_previous_month_output|raw }}
+                  <br />
+                  {{ previous_previous_month_more_output|raw }}
+                </div>
+              </div>
+            </div>
+          </div>
+          {# Tabs for two month summary END #}
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="live-listener-stats-{{ talk_show_nid }}">
+          {{ listener_stats_content }}
+        </div>
+      </div>
+    </div>
+    <br />
+
+  </div>
+</div>

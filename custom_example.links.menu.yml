@@ -1,0 +1,33 @@
+custom_example.feeds:
+  title: 'Analytics settings'
+  route_name: custom_example.settings
+  description: 'Analytics settings'
+  parent: system.admin_config_ui
+
+# Dashboard Summary Menus
+bbsradio_dashboard_summary:
+  title: 'Dashboard Summary'
+  description: 'Dashboard Summary'
+  route_name: custom_example.dashboard_summary
+  parent: bbsradio_base.admin_menu
+  menu_name: 'admin'
+  expanded: TRUE
+  weight: 6
+
+bbsradio_dashboard_summary.report:
+  title: 'Dashboard Summary'
+  description: 'Dashboard Summary'
+  route_name: custom_example.dashboard_summary
+  parent: bbsradio_dashboard_summary
+  menu_name: 'admin'
+  expanded: FALSE
+  weight: 1
+
+bbsradio_dashboard_summary.generate:
+  title: 'Generate Dashboard Summary'
+  description: 'Generate Dashboard Summary'
+  route_name: custom_example.dashboard_summary_generate
+  parent: bbsradio_dashboard_summary
+  menu_name: 'admin'
+  expanded: FALSE
+  weight: 2

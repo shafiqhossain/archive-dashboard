@@ -1,0 +1,386 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\user\Entity\User;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\ViewExecutable;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+/**
+ * Implements hook_theme().
+ *
+ * Defines the theming capabilities provided by this module.
+ */
+function custom_example_theme($existing, $type, $theme, $path) {
+  $theme = [
+    'custom_example_summary' => [
+      'variables' => [
+        'talk_show_nid' => NULL,
+        'talk_show_title' => NULL,
+        'summary_contents_data' => NULL,
+        'listener_stats_content' => NULL,
+        'more_statistics_content' => NULL,
+        'more_statistics_link' => NULL,
+      ],
+    ],
+    'custom_example_more_info' => [
+      'variables' => [
+        'talk_show_nid' => NULL,
+        'talk_show_title' => NULL,
+        'month_key' => NULL,
+        'blog_contents_data' => NULL,
+        'featured_columns_contents_data' => NULL,
+        'headlined_shows_contents_data' => NULL,
+        'featured_guests_contents_data' => NULL,
+        'program_archives_contents_data' => NULL,
+      ],
+    ],
+  ];
+
+  return $theme;
+}
+
+function custom_example_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view && in_array($view->id(), ['dashboard', 'host_dashboard'])) {
+    $database = \Drupal::database();
+
+    if ($view->id() == 'dashboard') {
+      $query = $database->select('node__field_include_show_page', 'isp');
+      $query->fields('isp', ['field_include_show_page_title']);
+      $query->orderBy('isp.field_include_show_page_title', 'ASC');
+      $results = $query->execute();
+
+      $options = [];
+      $options[''] = 'Any';
+      foreach ($results as $row) {
+        $title = $row->field_include_show_page_title;
+        $options[$title] = $title;
+      }
+
+      $form['field_include_show_page_title'] = [
+        '#type' => 'select',
+        '#options' => $options
+      ];
+    }
+
+    if ($view->id() == 'dashboard') {
+      $query = $database->select('user__roles', 'ur');
+      $query->fields('ur', ['entity_id']);
+      $query->condition('ur.roles_target_id', 'host');
+      $results = $query->execute();
+
+      $options = [];
+      $options[''] = 'Any';
+      foreach ($results as $row) {
+        $host = $row->entity_id;
+
+        $query = $database->select('users_field_data', 'ufd');
+        $query->fields('ufd', ['name']);
+        $query->condition('ufd.uid', $host);
+        $host_results = $query->execute()->fetchAll();
+
+        foreach ($host_results as $key => $value) {
+          $name = $value->name;
+          $options[$name] = $name;
+        }
+      }
+
+      $form['field_include_host_name_target_id'] = [
+        '#type' => 'select',
+        '#options' => $options
+      ];
+    }
+
+    $uid = \Drupal::currentUser()->id();
+    $query = $database->select('node__field_include_show_page', 'isp');
+    $query->fields('isp', ['field_include_show_page_title']);
+    $query->join('node_field_data', 'n', 'n.nid = isp.entity_id');
+    $query->condition('n.uid', $uid);
+    $query->orderBy('isp.field_include_show_page_title', 'ASC');
+    $host_results = $query->execute();
+
+    $host_shows[''] = 'Any';
+    foreach ($host_results as $row) {
+      $host_show_name = $row->field_include_show_page_title;
+      $host_shows[$host_show_name] = $host_show_name;
+    }
+
+    if ($view->id() == 'host_dashboard') {
+      $form['field_include_show_page_title'] = [
+        '#type' => 'select',
+        '#options' => $host_shows
+      ];
+    }
+  }
+}
+
+function custom_example_preprocess_views_view_table(&$variables) {
+  $view =  $variables['view'];
+  if ($view->id() == 'dashboard' || $view->id() == 'host_dashboard') {
+    $helper = \Drupal::service('dashboard.helper');
+    $uid = \Drupal::currentUser()->id();
+    $user = \Drupal\user\Entity\User::load($uid);
+
+    if ($view->id() == 'host_dashboard'){
+      $path = \Drupal::request()->getpathInfo();
+      $arg  = explode('/', $path);
+      $value = end($arg);
+      $variables['role'] = '';
+
+      if ($value == $uid) {
+        $variables['role'] = 1;
+      }
+    }
+
+    $base_url = \Drupal::request()->getSchemeAndHttpHost();
+    $variables['baseurl'] = $base_url;
+    $theme_path = \Drupal::service('extension.list.theme')->getPath('gavias_remito');
+    $variables['theme_path'] = $base_url . '/' . $theme_path;
+
+    $interval = '';
+    $dateInt1 = '';
+    $dateInt2 = '';
+
+    // If nothing selected in exposed filter, this is always empty
+    $variables['showname'] = $showname = $view->exposed_data["field_include_show_page_title"]; // its always empty??
+    $rows = $variables['rows'];
+    if (!empty($showname)) {  // This condition is not correct. its always set, even empty
+      foreach ($rows as $rowId => $row) {
+        $uid = $view->style_plugin->getFieldValue($rowId, 'uid');
+        $nid = $view->style_plugin->getFieldValue($rowId, 'nid');
+        $title = $view->style_plugin->getFieldValue($rowId, 'title');
+        $xml_feed = $view->style_plugin->getFieldValue($rowId, 'field_include_show_feed');
+        $show_profile = $view->style_plugin->getFieldValue($rowId, 'field_include_show_page');
+        $host = $view->style_plugin->getFieldValue($rowId, 'name');
+        $host_plain_txt = $view->style_plugin->getFieldValue($rowId, 'name_1');
+        $host_uid = $view->style_plugin->getFieldValue($rowId, 'field_include_host_name_1');
+
+        if ($view->id() != 'host_dashboard'){
+          $total_count = $view->style_plugin->getFieldValue($rowId, 'totalcount');
+        }
+        $podcast = '';
+
+        if (isset($xmlFeed) && !empty($xmlFeed)){
+          $xml = parse_url($xmlFeed,PHP_URL_PATH);
+          $xml_segment = explode('/', $xml);
+          $podcast = $xml_segment[1];
+
+          if (isset($xml_segment[2]) && !empty($xml_segment[2])) {
+            $podcast_value = $xml_segment[2];
+          }
+        }
+
+        if ($view->id() == 'dashboard') {
+          $csv_arr = [
+            'uid' => $uid,
+            'nid' => $nid,
+            'title' => $title,
+            'tot_count' => $total_count,
+            'xml_feed' => $xml_feed,
+            'show_profile' => $show_profile,
+            'host' => $host,
+            'host_plaintxt' => $host_plain_txt,
+            'co_host_uid' => $host_uid,
+            'podcast' => $podcast,
+          ];
+
+          // This always assign the last row info into variable!
+          $variables['csvQueryExp'] = urlencode(serialize($csv_arr));
+        }
+      }
+    }
+
+    // printing the header text. see custom_example.module
+    /*
+    if ($view->id() == 'dashboard') {
+      $variables['livestats'] = $helper->getCentovaContent();
+    }
+    */
+
+    $variables['viewhead'] = $helper->getDashboardHeader($interval, $dateInt1, $dateInt2);
+
+    foreach ($rows as $rowId => $row){
+      $show_profile = $view->style_plugin->getFieldValue($rowId, 'field_include_show_page');
+
+      $uid = $view->style_plugin->getFieldValue($rowId, 'uid');
+      $nid = $view->style_plugin->getFieldValue($rowId, 'nid');
+      $title = $view->style_plugin->getFieldValue($rowId, 'title');
+      $xml_feed = $view->style_plugin->getFieldValue($rowId, 'field_include_show_feed');
+
+      $show_profile = $view->style_plugin->getFieldValue($rowId, 'field_include_show_page');
+      $host = $view->style_plugin->getFieldValue($rowId, 'name');
+      $host_plain_txt = $view->style_plugin->getFieldValue($rowId, 'name_1');
+      $host_uid = $view->style_plugin->getFieldValue($rowId, 'field_include_host_name_1');
+
+      $total_count = 0;
+      $mrss_feed = '';
+      if ($view->id() == 'dashboard') {
+        $total_count = $view->style_plugin->getFieldValue($rowId, 'totalcount');
+        $mrss_feed = $view->style_plugin->getFieldValue($rowId, 'field_include_mrss_feed');
+      }
+      elseif ($view->id() == 'host_dashboard') {
+        $total_count = 0;
+        //$total_count = $view->style_plugin->getFieldValue($rowId, 'totalcount');
+        $mrss_feed = $view->style_plugin->getFieldValue($rowId, 'field_include_mrss_feed');
+      }
+      //dump($mrss_feed);
+
+      // Rendering the body. see custom_example.module
+      $viewbody = $helper->getDashboardBody(
+        $uid,
+        $nid,
+        $title,
+        $total_count,
+        $xml_feed,
+        $mrss_feed,
+        $show_profile,
+        $host,
+        $host_plain_txt,
+        $host_uid,
+        $interval,
+        $dateInt1,
+        $dateInt2
+      );
+      $variables['viewbody'][] = $viewbody;
+    }
+  }
+  // dump($variables);
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function custom_example_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->storage->id() == 'dashboard' && $query instanceof Sql) {
+    $query->addField('node_field_data', 'nid', '', ['function' => 'groupby']);
+    $query->addGroupBy('node_field_data.nid');
+  }
+}
+
+
+function custom_example_page_attachments_alter(array &$attachments) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  $node = $route_match->getParameter('node');
+
+  $audio_video_routes = [
+    'bbsradio_mp3_to_mp4.audio_embed',
+    'bbsradio_mp3_to_mp4.audio_listen',
+    'bbsradio_mp3_to_mp4.video_conv_watch',
+    'bbsradio_mp3_to_mp4.video_conv_embed',
+    'bbsradio_mp3_to_mp4.video_prod_watch',
+    'bbsradio_mp3_to_mp4.video_prod_embed',
+    'bbsradio_mp3_to_mp4.video_upld_watch',
+    'bbsradio_mp3_to_mp4.video_upld_embed',
+  ];
+
+  if ($node instanceof \Drupal\node\NodeInterface && in_array($route_name, $audio_video_routes) && ($node->bundle() == 'archive_descriptions')) {
+    $attachments['#attached']['drupalSettings']['custom_example']['node_id'] = $node->id();
+    $attachments['#attached']['library'][] = 'custom_example/player_logs';
+  }
+  elseif ($node instanceof \Drupal\node\NodeInterface && ($node->bundle() == 'archive_descriptions')) {
+    $attachments['#attached']['drupalSettings']['custom_example']['node_id'] = $node->id();
+    $attachments['#attached']['library'][] = 'custom_example/media_tracking';
+    $attachments['#attached']['library'][] = 'custom_example/download_tracking';
+  }
+}
+
+/**
+ * Process individual talk show node
+ *
+ * @param $nid
+ * @param $context
+ * @return void
+ */
+function custom_example_generate_summary($nid, &$context) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+  $dashboardHelper = \Drupal::service('dashboard.helper');
+
+  $message = 'Processing talk show ' . $node->getTitle() . ' ...';
+  $results = [];
+
+  $results[] = $dashboardHelper->processTalkShowSummary($node);
+  $context['message'] = $message;
+  $context['results'] = $results;
+}
+
+/**
+ * Dashboard summary batch process finished
+ *
+ * @param $success
+ * @param $results
+ * @param $operations
+ */
+function custom_example_generate_summary_finished($success, $results, $operations) {
+  // The 'success' parameter means no fatal PHP errors were detected. All
+  // other error management should be handled using 'results'.
+  if ($success) {
+    $message = \Drupal::translation()->formatPlural(
+      count($results),
+      'One talk show processed.', '@count talk show processed.'
+    );
+
+    \Drupal::state()->set('bbsradio_dashboard_summary_complete', \Drupal::time()->getRequestTime());
+  }
+  else {
+    $message = t('Finished with an error.');
+  }
+  \Drupal::messenger()->addStatus($message);
+
+  // Redirect to report
+  $url = Url::fromRoute('custom_example.dashboard_summary');
+  return new RedirectResponse($url->toString());
+}
+
+/**
+ * Implements hook_cron().
+ */
+function custom_example_cron() {
+  $start = microtime(true);   // Start timer
+
+  $connection = \Drupal::database();
+
+  // Get the cutoff date (first day of previous previous month).
+  $cutoff = new \DateTime('first day of -2 months midnight');
+  $cutoff_date = $cutoff->format('Y-m-d');
+
+  // Delete records older than cutoff.
+  $total_deleted = 0;
+  $deleted = $connection->delete('analytics_node_visits')
+    ->condition('visit_date', $cutoff_date, '<')
+    ->execute();
+  $total_deleted += $deleted;
+  $deleted = $connection->delete('analytics_profile_visits')
+    ->condition('visit_date', $cutoff_date, '<')
+    ->execute();
+  $total_deleted += $deleted;
+  $deleted = $connection->delete('analytics_rss_visits')
+    ->condition('visit_date', $cutoff_date, '<')
+    ->execute();
+  $total_deleted += $deleted;
+  $deleted = $connection->delete('analytics_audio_video_visits')
+    ->condition('visit_date', $cutoff_date, '<')
+    ->execute();
+  $total_deleted += $deleted;
+
+
+  $end = microtime(true);     // End timer
+
+  // Calculate elapsed time in minutes
+  $elapsed_seconds = $end - $start;
+  $elapsed_minutes = $elapsed_seconds / 60;
+
+  // Log to watchdog
+  \Drupal::logger('custom_example')->notice(
+    'Analytics data cleanup completed. Deleted @count rows in @minutes minutes (@seconds seconds).',
+    [
+      '@count' => $total_deleted,
+      '@minutes' => round($elapsed_minutes, 4),
+      '@seconds' => round($elapsed_seconds, 4),
+    ]
+  );
+}

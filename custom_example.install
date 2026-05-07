@@ -1,0 +1,2471 @@
+ <?php
+
+ use Drupal\Core\Database\Database;
+
+ /**
+* Creates the tables using the schema API.
+*/
+function custom_example_schema() {
+  $schema['shows_main_links'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'nid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+      ],
+      'link_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'show_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => FALSE,
+        'length' => 10,
+      ],
+      'ip_address' => [
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+  ];
+
+  // Dashboard tables
+  $schema['dashboard_show_page'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_host_page'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_blog_page'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_article_page'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_upcoming_show_topics'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_feature_your_guest'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_program_handouts'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_rss_feed_link'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_small_banner_adverts'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_large_banner_adverts'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_audio_clip_uploads'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_video_clip_uploads'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_episode_information'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_rss_xml'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_live_24k_stats_phones'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_live_24k_stats'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_live_64k_stats'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_live_128k_stats'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+      ],
+      'total_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'peak_pulls' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'hits' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'subscribers' => [
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'length' => 50,
+        'default' => '',
+      ],
+      'unique_visitors' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'click_throughs' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'plays' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'downloads' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique key' => [
+      'uid' => ['uid'],
+    ],
+  ];
+
+  $schema['dashboard_summary'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'group_key' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'group_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'group_weight' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'column_key' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'column_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'column_value' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'column_weight' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'layout_type' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 1,
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique keys' => [
+      'group_key__column_key' => ['group_key', 'column_key'],
+    ],
+  ];
+
+  $schema['subscription_bulk_notifications'] = [
+    'description' => 'Stores the subscription bulk notification info.',
+    'fields' => [
+      'message_id' => [
+        'description' => 'PK: Message id',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'filters' => [
+        'description' => 'Filters',
+        'type' => 'text',
+      ],
+      'message_subject' => [
+        'description' => 'Message subject',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ],
+      'message_body' => [
+        'description' => 'Message body',
+        'type' => 'text',
+      ],
+      'send_date' => [
+        'description' => 'Send date',
+        'type' => 'datetime',
+        'mysql_type' => 'datetime',
+        'not null' => FALSE,
+      ],
+      'send_by' => [
+        'description' => 'User ID',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'total_scheduled' => [
+        'description' => 'Total scheduled',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'total_sent' => [
+        'description' => 'Total sent',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['message_id'],
+  ];
+
+  $schema['analytics_node_visits'] = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The node id of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'Bundle type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'visit_count' => [
+        'description' => 'Visit count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 1,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'nid'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'nid' => ['nid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  $schema['analytics_profile_visits'] = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'host_uid' => [
+        'description' => 'The host uid of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'visit_count' => [
+        'description' => 'Visit count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'host_uid'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'host_uid' => ['host_uid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  $schema['analytics_rss_visits'] = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'rss_type' => [
+        'description' => '1-RSS Feed, 2-MRSS Feed',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'rss_id' => [
+        'description' => 'The rss or mrss id of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The talk show nid of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'Bundle type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'visit_count' => [
+        'description' => 'Visit count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'rss_id', 'rss_type'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'nid' => ['nid'],
+      'uid' => ['uid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  $schema['analytics_audio_video_visits'] = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The talk show nid of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'Bundle type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'audio_play_count' => [
+        'description' => 'Audio play count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'audio_view_count' => [
+        'description' => 'Audio view count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'video_play_count' => [
+        'description' => 'Video play count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'video_view_count' => [
+        'description' => 'Video view count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'media_download_count' => [
+        'description' => 'Media download count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'nid'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'nid' => ['nid'],
+      'uid' => ['uid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  return $schema;
+}
+
+ /**
+  * Create table "Dashboard Summary"
+  */
+function custom_example_update_9501() {
+  $dashboard_summary = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'group_key' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'group_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'group_weight' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'column_key' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'column_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'collation' =>'utf8_unicode_ci',
+        'default' => '',
+      ],
+      'column_value' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'column_weight' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'layout_type' => [
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => 1,
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'unique keys' => [
+      'group_key__column_key' => ['group_key', 'column_key'],
+    ],
+  ];
+
+  $database = \Drupal::database();
+  $schema = $database->schema();
+  if (!$schema->tableExists('dashboard_summary')) {
+    $schema->createTable('dashboard_summary', $dashboard_summary);
+  }
+}
+
+/**
+  * Create new table named "subscription_bulk_notifications"
+  */
+function custom_example_update_10001() {
+   $schema['subscription_bulk_notifications'] = [
+     'description' => 'Stores the subscription bulk notification info.',
+     'fields' => [
+       'message_id' => [
+         'description' => 'PK: Message id',
+         'type' => 'serial',
+         'not null' => TRUE,
+       ],
+       'filters' => [
+         'description' => 'Filters',
+         'type' => 'text',
+       ],
+       'message_subject' => [
+         'description' => 'Message subject',
+         'type' => 'varchar',
+         'length' => 255,
+         'not null' => FALSE,
+         'default' => '',
+       ],
+       'message_body' => [
+         'description' => 'Message body',
+         'type' => 'text',
+       ],
+       'send_date' => [
+         'description' => 'Send date',
+         'type' => 'datetime',
+         'mysql_type' => 'datetime',
+         'not null' => FALSE,
+       ],
+       'send_by' => [
+         'description' => 'User ID',
+         'type' => 'int',
+         'not null' => TRUE,
+         'default' => 0,
+       ],
+       'total_scheduled' => [
+         'description' => 'Total scheduled',
+         'type' => 'int',
+         'not null' => TRUE,
+         'default' => 0,
+       ],
+       'total_sent' => [
+         'description' => 'Total sent',
+         'type' => 'int',
+         'not null' => TRUE,
+         'default' => 0,
+       ],
+     ],
+     'primary key' => ['message_id'],
+   ];
+
+   if (!\Drupal::database()->schema()->tableExists('subscription_bulk_notifications')) {
+     \Drupal::database()->schema()->createTable('subscription_bulk_notifications', $schema['subscription_bulk_notifications']);
+   }
+}
+
+/**
+  * Create new tables named "analytic_node_visits", "analytic_profile_visits", "analytic_rss_visits" and "analytic_audio_video_logs" for analytics
+  */
+function custom_example_update_10002() {
+  // Get schema handler.
+  $schema = Database::getConnection()->schema();
+
+  $analytics_node_visits = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The node id of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'Bundle type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'visit_count' => [
+        'description' => 'Visit count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 1,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'nid'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'nid' => ['nid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  $analytics_profile_visits = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'host_uid' => [
+        'description' => 'The host uid of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'visit_count' => [
+        'description' => 'Visit count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'host_uid'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'host_uid' => ['host_uid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  $analytics_rss_visits = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'rss_type' => [
+        'description' => '1-RSS Feed, 2-MRSS Feed',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'rss_id' => [
+        'description' => 'The rss or mrss id of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The talk show nid of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'Bundle type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'visit_count' => [
+        'description' => 'Visit count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'rss_id', 'rss_type'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'nid' => ['nid'],
+      'uid' => ['uid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  $analytics_audio_video_visits = [
+    'fields' => [
+      'id' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'session_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'visit_date' => [
+        'description' => 'The date value.',
+        'type' => 'varchar',
+        'length' => 10,
+        'mysql_type' => 'date',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The talk show nid of the page',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'Bundle type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'ip_address' => [
+        'description' => 'IP Address',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'audio_play_count' => [
+        'description' => 'Audio play count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'audio_view_count' => [
+        'description' => 'Audio view count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'video_play_count' => [
+        'description' => 'Video play count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'video_view_count' => [
+        'description' => 'Video view count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'media_download_count' => [
+        'description' => 'Media download count',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'bot' => [
+        'description' => 'Is the visitor a bot',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'device_type' => [
+        'description' => 'Type of device. 1 = Desktop, 2 = Tablet, 3 = Mobile',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'session' => ['session_id', 'visit_date', 'nid'],
+    ],
+    'indexes' => [
+      'visit_date' => ['visit_date'],
+      'nid' => ['nid'],
+      'uid' => ['uid'],
+      'ip_address' => ['ip_address'],
+      'bot' => ['bot'],
+      'device_type' => ['device_type'],
+      'session_date' => ['session_id', 'visit_date'],
+    ],
+  ];
+
+  // create tables.
+  if (!$schema->tableExists('analytics_node_visits')) {
+    $schema->createTable('analytics_node_visits', $analytics_node_visits);
+  }
+
+  if (!$schema->tableExists('analytics_profile_visits')) {
+    $schema->createTable('analytics_profile_visits', $analytics_profile_visits);
+  }
+
+  if (!$schema->tableExists('analytics_rss_visits')) {
+    $schema->createTable('analytics_rss_visits', $analytics_rss_visits);
+  }
+
+  if (!$schema->tableExists('analytics_audio_video_visits')) {
+    $schema->createTable('analytics_audio_video_visits', $analytics_audio_video_visits);
+  }
+}

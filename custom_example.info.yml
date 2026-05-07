@@ -1,0 +1,7 @@
+name: Analytics_Dashboard.
+description:  Analytics Dashboard All Logical Functionalities are Applied in this Module.
+core_version_requirement: ^9 || ^10
+package: Bbsradio
+type: module
+version: '2.0'
+project: 'Bbsradio'

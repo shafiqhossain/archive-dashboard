@@ -1,0 +1,69 @@
+<div class="analytics-dashboard-more-info">
+  <div
+    class="panel-group"
+    id="accordion-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}"
+    role="tablist"
+    aria-multiselectable="false">
+
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="heading-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}">
+        <h5 class="panel-title">
+          <a
+            role="button"
+            data-toggle="collapse"
+            class="accordion-toggle accordion-arrow-toggle collapsed"
+            data-parent="#accordion-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}"
+            href="#collapse-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}"
+            aria-expanded="false"
+            aria-controls="collapse-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}">More Statistics Data</a>
+        </h5>
+      </div>
+      <div
+        id="collapse-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}"
+        class="panel-collapse collapse"
+        role="tabpanel"
+        aria-labelledby="heading-analytics-dashboard-more-info-{{ talk_show_nid }}-{{ month_key }}">
+
+        <div class="analytics-more-info">
+          <div class="analytics-more-info-inner">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#dashboard-more-info-blog-{{ talk_show_nid }}-{{ month_key }}" aria-controls="dashboard-more-info-blog-{{ talk_show_nid }}-{{ month_key }}" role="tab" data-toggle="tab">Blog</a></li>
+              <li role="presentation"><a href="#dashboard-more-info-featured-columns-{{ talk_show_nid }}-{{ month_key }}" aria-controls="dashboard-more-info-featured-columns-{{ talk_show_nid }}-{{ month_key }}" role="tab" data-toggle="tab">Featured Columns</a></li>
+              <li role="presentation"><a href="#dashboard-more-info-headlined-shows-{{ talk_show_nid }}-{{ month_key }}" aria-controls="dashboard-more-info-headlined-shows-{{ talk_show_nid }}-{{ month_key }}" role="tab" data-toggle="tab">Headlined Shows</a></li>
+              <li role="presentation"><a href="#dashboard-more-info-featured-guests-{{ talk_show_nid }}-{{ month_key }}" aria-controls="dashboard-more-info-featured-guests-{{ talk_show_nid }}-{{ month_key }}" role="tab" data-toggle="tab">Featured Guests</a></li>
+              <li role="presentation"><a href="#dashboard-more-info-program-archives-{{ talk_show_nid }}-{{ month_key }}" aria-controls="dashboard-more-info-program-archives-{{ talk_show_nid }}-{{ month_key }}" role="tab" data-toggle="tab">Program Archives / Episode Podcasts</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              {% set blog_output = blog_contents_data.output %}
+              <div role="tabpanel" class="tab-pane fade in active" id="dashboard-more-info-blog-{{ talk_show_nid }}-{{ month_key }}">
+                {{ blog_output }}
+              </div>
+              {% set featured_columns_output = featured_columns_contents_data.output %}
+              <div role="tabpanel" class="tab-pane fade in" id="dashboard-more-info-featured-columns-{{ talk_show_nid }}-{{ month_key }}">
+                {{ featured_columns_output }}
+              </div>
+              {% set headlined_show_output = headlined_shows_contents_data.output %}
+              <div role="tabpanel" class="tab-pane fade in" id="dashboard-more-info-headlined-shows-{{ talk_show_nid }}-{{ month_key }}">
+                {{ headlined_show_output }}
+              </div>
+              {% set featured_guests_output = featured_guests_contents_data.output %}
+              <div role="tabpanel" class="tab-pane fade in" id="dashboard-more-info-featured-guests-{{ talk_show_nid }}-{{ month_key }}">
+                {{ featured_guests_output }}
+              </div>
+              {% set program_archives_output = program_archives_contents_data.output %}
+              <div role="tabpanel" class="tab-pane fade in" id="dashboard-more-info-program-archives-{{ talk_show_nid }}-{{ month_key }}">
+                {{ program_archives_output }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

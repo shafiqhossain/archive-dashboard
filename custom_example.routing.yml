@@ -1,0 +1,171 @@
+# Settings
+custom_example.settings:
+  path: '/admin/config/user-interface/analytics-settings'
+  defaults:
+    _form: '\Drupal\custom_example\Form\AnalyticsSettings'
+    _title: 'Analytics Settings'
+  requirements:
+    _permission: 'access administration pages'
+
+custom_example.custom_example:
+  path: '/analytics/dashboard'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsSimpleDashboardController::analyticsDashboard'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access analytics dashboard'
+
+custom_example.analytics_host_dashboard:
+  path: '/analytics/host/dashboard'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsSimpleDashboardController::analyticsHostDashboard'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access analytics host dashboard'
+
+custom_example.dashboard_column_settings:
+  path: '/analytics/dashboard/columns'
+  defaults:
+    _form: '\Drupal\custom_example\Form\DashboardColumns'
+    _title: 'Dashboard Column Settings'
+  requirements:
+    _permission: 'access analytics dashboard columns'
+
+
+custom_example.host_dashboard:
+  path: '/host-dashboard/user'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AdminDashboardController::custom_example_redirect_path'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access content'
+
+custom_example.shows_link:
+  path: '/shows/link/ajax/{nid}/{linkClick}/{showNameVal}'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AdminDashboardController::ajax_menu_links'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access administration pages'
+
+custom_example.show_autocomplete:
+  path: '/showname/autocomplete/{string}'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AdminDashboardController::dashboard_showname_autocomplete'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access administration pages'
+
+custom_example.host_autocomplete:
+  path: '/host/showname/autocomplete/{string}'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AdminDashboardController::dashboard_host_showname_autocomplete'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access administration pages'
+
+custom_example.more_data_stats:
+  path: '/dashboard/more-data-stats'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_more_data_stats_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.live_listener_stats:
+  path: '/dashboard/live-listener-stats'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_live_listener_stats_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.blog_seperate:
+  path: '/dashboard/blog/separate'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_blog_separate_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.article_seperate:
+  path: '/dashboard/article/separate'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_article_separate_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.upcomeshow_seperate:
+  path: '/dashboard/upcomeshow/separate'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_upcoming_show_separate_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.featureguest_seperate:
+  path: '/dashboard/featureguest/separate'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_feature_guest_separate_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.episode_seperate:
+  path: '/dashboard/episode/separate'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_episode_separate_page'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _role: 'administrator+host+old_host'
+
+custom_example.export:
+  path: '/dashboard/export'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboard_export'
+    _title: 'Analytics Dashboard'
+  requirements:
+    _permission: 'access administration pages'
+
+# My Dashboard
+custom_example.dashboard_permission:
+  path: '/my-dashboard'
+  defaults:
+    _form: '\Drupal\custom_example\Form\DashboardPermission'
+    _title: 'My Dashboard'
+  requirements:
+    _permission: 'access content'
+
+# Create play logs for video and audio
+custom_example.player_logs:
+  path: '/analytics/archive/log'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::archive_play_log'
+    _title: 'Player log'
+  requirements:
+    _permission: 'access content'
+
+# Dashboard summary
+custom_example.dashboard_summary:
+  path: '/dashboard/summary'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\AnalyticsDashboardController::dashboardSummary'
+    _title: 'Dashboard summary'
+  requirements:
+    _role: 'administrator'
+
+custom_example.dashboard_summary_generate:
+  path: '/admin/dashboard/summary/generate'
+  defaults:
+    _form: '\Drupal\custom_example\Form\GenerateDashboardSummaryForm'
+    _title: 'Generate Dashboard Summary'
+  requirements:
+    _role: 'administrator'
+
+custom_example.mediaelement_log:
+  path: '/media-tracking/log'
+  defaults:
+    _controller: '\Drupal\custom_example\Controller\MediaElementLogController::track'
+  requirements:
+    _permission: 'access content'

@@ -1,0 +1,39 @@
+dashboard:
+  version: 1.x
+  js:
+    js/dashboard.js: {}
+
+analytics-dashboard:
+  version: 1.x
+  js:
+    js/analytics-dashboard.js: {}
+
+player_logs:
+  version: 1.x
+  js:
+    js/player_logs.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupalSettings
+
+media_tracking:
+  version: 1.x
+  js:
+    js/mediaelement-tracking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupalSettings
+
+download_tracking:
+  version: 1.x
+  js:
+    js/download-tracking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupalSettings
